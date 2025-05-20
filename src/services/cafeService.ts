@@ -6,38 +6,38 @@ import { getCurrentUser, registerActivity } from "./authService";
 const initialDrinks: Drink[] = [
   {
     id: "1",
+    name: "Café Normal",
+    price: 2.0,
+    category: "Café",
+    description: "Un café traditionnel de qualité"
+  },
+  {
+    id: "2",
     name: "Espresso",
     price: 2.5,
     category: "Café",
     description: "Un café fort et concentré"
   },
   {
-    id: "2",
+    id: "3",
     name: "Cappuccino",
     price: 3.5,
     category: "Café",
     description: "Espresso, lait mousseux et cacao"
   },
   {
-    id: "3",
+    id: "4",
     name: "Latte",
     price: 4.0,
     category: "Café",
     description: "Espresso avec beaucoup de lait"
   },
   {
-    id: "4",
+    id: "5",
     name: "Thé Vert",
     price: 3.0,
     category: "Thé",
     description: "Thé vert bio"
-  },
-  {
-    id: "5",
-    name: "Chocolat Chaud",
-    price: 4.5,
-    category: "Chocolat",
-    description: "Avec du chocolat artisanal"
   },
   {
     id: "6",
@@ -45,6 +45,62 @@ const initialDrinks: Drink[] = [
     price: 3.5,
     category: "Jus",
     description: "Pressé à la minute"
+  },
+  {
+    id: "7",
+    name: "Jus de Banane",
+    price: 3.8,
+    category: "Jus",
+    description: "Onctueux et rafraîchissant"
+  },
+  {
+    id: "8",
+    name: "Panaché",
+    price: 4.0,
+    category: "Boisson",
+    description: "Bière et limonade"
+  },
+  {
+    id: "9",
+    name: "Petit Déjeuner",
+    price: 8.5,
+    category: "Repas",
+    description: "Café, jus d'orange et viennoiserie"
+  },
+  {
+    id: "10",
+    name: "Lait au Chocolat",
+    price: 3.2,
+    category: "Boisson",
+    description: "Lait chaud avec du chocolat artisanal"
+  },
+  {
+    id: "11",
+    name: "Coca-Cola",
+    price: 3.0,
+    category: "Soda",
+    description: "Classique et rafraîchissant"
+  },
+  {
+    id: "12",
+    name: "Fanta",
+    price: 3.0,
+    category: "Soda",
+    description: "Saveur orange pétillante"
+  },
+  {
+    id: "13",
+    name: "Eau Minérale Plate",
+    price: 2.5,
+    category: "Eau",
+    description: "Eau minérale naturelle"
+  },
+  {
+    id: "14",
+    name: "Eau Minérale Gazeuse",
+    price: 2.7,
+    category: "Eau",
+    description: "Eau minérale pétillante"
   },
 ];
 

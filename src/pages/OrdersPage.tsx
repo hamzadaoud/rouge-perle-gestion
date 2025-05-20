@@ -1,14 +1,38 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { Coffee, Printer } from 'lucide-react';
+import { Coffee, Printer, Milk, Banana, Juice, Soda } from 'lucide-react';
 import { Drink, OrderItem } from '../types';
 import { createOrder, getDrinks } from '../services/cafeService';
 import { printTicket } from '../services/ticketService';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const OrdersPage: React.FC = () => {
   const [cart, setCart] = useState<OrderItem[]>([]);
   const [drinks] = useState<Drink[]>(getDrinks());
+  const [categoryFilter, setCategoryFilter] = useState<string>("Tous");
+  
+  const categories = useMemo(() => {
+    const cats = ["Tous", ...new Set(drinks.map(drink => drink.category))];
+    return cats.sort();
+  }, [drinks]);
+  
+  const filteredDrinks = useMemo(() => {
+    return categoryFilter === "Tous" 
+      ? drinks 
+      : drinks.filter(drink => drink.category === categoryFilter);
+  }, [drinks, categoryFilter]);
+  
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "Café": return <Coffee className="h-5 w-5" />;
+      case "Jus": return <Juice className="h-5 w-5" />;
+      case "Soda": return <Soda className="h-5 w-5" />;
+      case "Boisson": return <Milk className="h-5 w-5" />;
+      case "Eau": return <Milk className="h-5 w-5" />;
+      default: return <Coffee className="h-5 w-5" />;
+    }
+  };
   
   const addToCart = (drink: Drink) => {
     const existingItem = cart.find(item => item.drinkId === drink.id);
@@ -74,16 +98,41 @@ const OrdersPage: React.FC = () => {
       
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="flex-1">
-          <h2 className="mb-4 text-xl font-semibold text-cafeBlack">Menu</h2>
+          <div className="mb-4 flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-cafeBlack">Menu</h2>
+            <div className="w-48">
+              <Select
+                value={categoryFilter}
+                onValueChange={(value) => setCategoryFilter(value)}
+              >
+                <SelectTrigger className="border-cafeRed focus:ring-cafeRed">
+                  <SelectValue placeholder="Filtrer par catégorie" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map(category => (
+                    <SelectItem key={category} value={category}>
+                      <div className="flex items-center">
+                        {category !== "Tous" && getCategoryIcon(category)}
+                        <span className="ml-2">{category}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {drinks.map((drink) => (
+            {filteredDrinks.map((drink) => (
               <div 
                 key={drink.id} 
                 className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105"
               >
-                <div className="mb-3 flex justify-between">
-                  <h3 className="font-medium">{drink.name}</h3>
+                <div className="mb-3 flex justify-between items-center">
+                  <div className="flex items-center">
+                    {getCategoryIcon(drink.category)}
+                    <h3 className="font-medium ml-2">{drink.name}</h3>
+                  </div>
                   <span className="text-cafeRed font-semibold">{drink.price.toFixed(2)} €</span>
                 </div>
                 <p className="mb-3 text-sm text-gray-500">{drink.description}</p>
