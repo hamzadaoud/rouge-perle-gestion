@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { Coffee, Printer, Milk, Banana, Juice, Soda } from 'lucide-react';
+import { Coffee, Printer, Milk, Banana, GlassWater, Beer, Sandwich } from 'lucide-react';
 import { Drink, OrderItem } from '../types';
 import { createOrder, getDrinks } from '../services/cafeService';
 import { printTicket } from '../services/ticketService';
@@ -26,10 +26,11 @@ const OrdersPage: React.FC = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case "Café": return <Coffee className="h-5 w-5" />;
-      case "Jus": return <Juice className="h-5 w-5" />;
-      case "Soda": return <Soda className="h-5 w-5" />;
+      case "Jus": return <Banana className="h-5 w-5" />;
+      case "Soda": return <Beer className="h-5 w-5" />;
       case "Boisson": return <Milk className="h-5 w-5" />;
-      case "Eau": return <Milk className="h-5 w-5" />;
+      case "Eau": return <GlassWater className="h-5 w-5" />;
+      case "Repas": return <Sandwich className="h-5 w-5" />;
       default: return <Coffee className="h-5 w-5" />;
     }
   };
