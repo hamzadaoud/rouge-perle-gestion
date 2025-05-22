@@ -7,27 +7,27 @@ const AgentsPage: React.FC = () => {
   // Données des agents (normalement à récupérer depuis une API/BDD)
   const agents = [
     {
+      id: "admin1",
+      name: "Mostapha",
+      email: "Mostapha@perle-rouge.com",
+      role: "admin",
+      avatar: "MD",
+      status: "active",
+    },
+    {
       id: "agent1",
-      name: "Jean Dupont",
-      email: "jean@laperle.rouge",
+      name: "Aziz",
+      email: "Aziz@perle-rouge.com",
       role: "agent",
-      avatar: "JD",
+      avatar: "AZ",
       status: "active",
     },
     {
       id: "agent2",
-      name: "Marie Martin",
-      email: "marie@laperle.rouge",
+      name: "Noureddine",
+      email: "Noureddine@perle-rouge.com",
       role: "agent",
-      avatar: "MM",
-      status: "active",
-    },
-    {
-      id: "admin1",
-      name: "Administrateur",
-      email: "admin@laperle.rouge",
-      role: "admin",
-      avatar: "AD",
+      avatar: "ND",
       status: "active",
     }
   ];

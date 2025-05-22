@@ -79,10 +79,10 @@ const LoginPage: React.FC = () => {
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>Utilisateur de démonstration:</p>
           <p className="font-medium">
-            Admin: admin@laperle.rouge / admin123
+            Admin: Mostapha@perle-rouge.com / DARANE1967
           </p>
           <p className="font-medium">
-            Agent: jean@laperle.rouge / jean123
+            Agent: Aziz@perle-rouge.com / AZIZ3435
           </p>
         </div>
       </form>
