@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Coffee, Printer, Milk, Banana, GlassWater, Beer, Sandwich } from 'lucide-react';
@@ -134,7 +133,7 @@ const OrdersPage: React.FC = () => {
                     {getCategoryIcon(drink.category)}
                     <h3 className="font-medium ml-2">{drink.name}</h3>
                   </div>
-                  <span className="text-cafeRed font-semibold">{drink.price.toFixed(2)} €</span>
+                  <span className="text-cafeRed font-semibold">{drink.price.toFixed(2)} MAD</span>
                 </div>
                 <p className="mb-3 text-sm text-gray-500">{drink.description}</p>
                 <button
@@ -164,7 +163,7 @@ const OrdersPage: React.FC = () => {
                     <div key={item.drinkId} className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
                       <div>
                         <p className="font-medium">{item.drinkName}</p>
-                        <p className="text-sm text-gray-500">{item.unitPrice.toFixed(2)} € / unité</p>
+                        <p className="text-sm text-gray-500">{item.unitPrice.toFixed(2)} MAD / unité</p>
                       </div>
                       <div className="flex items-center">
                         <button 
@@ -188,7 +187,7 @@ const OrdersPage: React.FC = () => {
                 <div className="mb-4 border-t border-gray-200 pt-3">
                   <div className="flex justify-between">
                     <span className="font-semibold">Total:</span>
-                    <span className="font-semibold text-cafeRed">{calculateTotal().toFixed(2)} €</span>
+                    <span className="font-semibold text-cafeRed">{calculateTotal().toFixed(2)} MAD</span>
                   </div>
                 </div>
                 

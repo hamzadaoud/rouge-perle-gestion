@@ -42,12 +42,21 @@ export const printTicket = (order: Order): void => {
           display: flex;
           justify-content: space-between;
           margin-bottom: 0.5rem;
+          text-align: left;
+        }
+        .item-name {
+          width: 60%;
+        }
+        .item-price {
+          width: 40%;
+          text-align: right;
         }
         .total {
           margin-top: 1rem;
           font-weight: bold;
           border-top: 1px dashed black;
           padding-top: 0.5rem;
+          font-size: 1.2rem;
         }
         .footer {
           margin-top: 2rem;
@@ -71,14 +80,14 @@ export const printTicket = (order: Order): void => {
       <div class="date">${new Date(order.date).toLocaleString()}</div>
       <div class="server">Serveur: ${order.agentName}</div>
       <div class="items">
-        ${order.items.map(item => `
+        ${order.items.map((item, index) => `
           <div class="item">
-            <span>${item.quantity}x ${item.drinkName}</span>
-            <span>${(item.unitPrice * item.quantity).toFixed(2)}€</span>
+            <div class="item-name">${index + 1}. ${item.quantity}x ${item.drinkName}</div>
+            <div class="item-price">${(item.unitPrice * item.quantity).toFixed(2)} MAD</div>
           </div>
         `).join('')}
       </div>
-      <div class="total">Total: ${order.total.toFixed(2)}€</div>
+      <div class="total">Total: ${order.total.toFixed(2)} MAD</div>
       <div class="barcode">${order.id}</div>
       <div class="message">${generateThankYouMessage()}</div>
       <div class="footer">Merci de votre visite!</div>
@@ -98,3 +107,4 @@ export const printTicket = (order: Order): void => {
     alert("Veuillez autoriser les fenêtres popup pour imprimer le ticket.");
   }
 };
+
