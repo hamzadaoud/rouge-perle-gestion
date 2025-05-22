@@ -1,3 +1,4 @@
+
 import { Drink, Order, OrderItem, Revenue, TimeLog } from "../types";
 import { getCurrentUser, registerActivity } from "./authService";
 
@@ -123,6 +124,25 @@ export const getDrinks = (): Drink[] => {
   initStorage();
   try {
     return JSON.parse(localStorage.getItem("drinks") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+// Ajoutons les fonctions manquantes qui sont utilisées ailleurs
+export const getOrders = (): Order[] => {
+  initStorage();
+  try {
+    return JSON.parse(localStorage.getItem("orders") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+export const getTimeLogs = (): TimeLog[] => {
+  initStorage();
+  try {
+    return JSON.parse(localStorage.getItem("timeLogs") || "[]");
   } catch {
     return [];
   }
