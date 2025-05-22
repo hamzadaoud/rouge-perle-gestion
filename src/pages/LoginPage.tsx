@@ -75,19 +75,10 @@ const LoginPage: React.FC = () => {
           <LogIn size={18} className="mr-2" />
           Se connecter
         </button>
-        
-        <div className="mt-4 text-center text-sm text-gray-500">
-          <p>Utilisateur de démonstration:</p>
-          <p className="font-medium">
-            Admin: Mostapha@perle-rouge.com / DARANE1967
-          </p>
-          <p className="font-medium">
-            Agent: Aziz@perle-rouge.com / AZIZ3435
-          </p>
-        </div>
       </form>
     </AuthLayout>
   );
 };
 
 export default LoginPage;
+
