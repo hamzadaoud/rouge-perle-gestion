@@ -1,4 +1,3 @@
-
 import { Drink, Order, OrderItem, Revenue, TimeLog } from "../types";
 import { getCurrentUser, registerActivity } from "./authService";
 
@@ -129,22 +128,41 @@ export const getDrinks = (): Drink[] => {
   }
 };
 
-export const getOrders = (): Order[] => {
-  initStorage();
-  try {
-    return JSON.parse(localStorage.getItem("orders") || "[]");
-  } catch {
-    return [];
-  }
+// Nouvelles fonctions pour la gestion des produits
+export const updateDrink = (updatedDrink: Drink): Drink[] => {
+  const drinks = getDrinks();
+  const updatedDrinks = drinks.map(drink => 
+    drink.id === updatedDrink.id ? updatedDrink : drink
+  );
+  
+  localStorage.setItem("drinks", JSON.stringify(updatedDrinks));
+  registerActivity(`A modifié le produit: ${updatedDrink.name}`);
+  
+  return updatedDrinks;
 };
 
-export const getTimeLogs = (): TimeLog[] => {
-  initStorage();
-  try {
-    return JSON.parse(localStorage.getItem("timeLogs") || "[]");
-  } catch {
-    return [];
+export const addDrink = (newDrink: Drink): Drink[] => {
+  const drinks = getDrinks();
+  const updatedDrinks = [...drinks, newDrink];
+  
+  localStorage.setItem("drinks", JSON.stringify(updatedDrinks));
+  registerActivity(`A ajouté un nouveau produit: ${newDrink.name}`);
+  
+  return updatedDrinks;
+};
+
+export const deleteDrink = (drinkId: string): Drink[] => {
+  const drinks = getDrinks();
+  const drinkToDelete = drinks.find(d => d.id === drinkId);
+  const updatedDrinks = drinks.filter(drink => drink.id !== drinkId);
+  
+  localStorage.setItem("drinks", JSON.stringify(updatedDrinks));
+  
+  if (drinkToDelete) {
+    registerActivity(`A supprimé le produit: ${drinkToDelete.name}`);
   }
+  
+  return updatedDrinks;
 };
 
 // Ajouter une commande

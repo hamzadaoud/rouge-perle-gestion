@@ -1,24 +1,23 @@
-
 import { User, UserRole } from "../types";
 
 // Dans une vraie application, ces données seraient stockées dans une base de données
 const users: User[] = [
   {
     id: "admin1",
-    email: "admin@laperle.rouge",
-    name: "Administrateur",
+    email: "Mostapha@perle-rouge.com",
+    name: "Mostapha",
     role: "admin",
   },
   {
     id: "agent1",
-    email: "jean@laperle.rouge",
-    name: "Jean Dupont",
+    email: "Aziz@perle-rouge.com",
+    name: "Aziz",
     role: "agent",
   },
   {
     id: "agent2",
-    email: "marie@laperle.rouge",
-    name: "Marie Martin",
+    email: "Noureddine@perle-rouge.com",
+    name: "Noureddine",
     role: "agent",
   },
 ];
@@ -26,9 +25,9 @@ const users: User[] = [
 // Cette fonction simule un stockage local des mots de passe
 // Dans une vraie application, on utiliserait un hash sécurisé stocké en base de données
 const passwords: Record<string, string> = {
-  "admin@laperle.rouge": "admin123",
-  "jean@laperle.rouge": "jean123",
-  "marie@laperle.rouge": "marie123",
+  "Mostapha@perle-rouge.com": "DARANE1967",
+  "Aziz@perle-rouge.com": "AZIZ3435",
+  "Noureddine@perle-rouge.com": "NOUREDDINE7080",
 };
 
 export const authenticate = (email: string, password: string): User | null => {
