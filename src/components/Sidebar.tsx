@@ -76,14 +76,14 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
             <Link
               key={link.to}
               to={link.to}
-              className={`flex items-center px-4 py-3 transition-colors ${
+              className={`flex items-center justify-center md:justify-start px-4 py-3 transition-colors text-center ${
                 isActive
                   ? 'bg-cafeRed text-white'
                   : 'text-gray-300 hover:bg-gray-800'
               }`}
             >
-              <span className="mr-3">{link.icon}</span>
-              <span>{link.label}</span>
+              <span className="flex justify-center md:mr-3">{link.icon}</span>
+              <span className="hidden md:inline">{link.label}</span>
             </Link>
           );
         })}

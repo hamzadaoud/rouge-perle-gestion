@@ -26,12 +26,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col w-full">
       <Navbar user={user} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar user={user} />
-        <main className="flex-1 overflow-auto bg-cafeLightGray p-6">
-          {children}
+        <div className="hidden md:block">
+          <Sidebar user={user} />
+        </div>
+        <main className="flex-1 overflow-auto bg-cafeLightGray p-3 md:p-6">
+          <div className="w-full max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>

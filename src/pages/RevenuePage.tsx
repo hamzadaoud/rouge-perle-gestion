@@ -93,147 +93,155 @@ const RevenuePage: React.FC = () => {
   
   return (
     <DashboardLayout requireAdmin={true}>
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-cafeBlack">Revenus</h1>
-        <p className="text-gray-500">Analyse des revenus du café</p>
-      </div>
-      
-      <div className="mb-6 rounded-lg bg-white p-4 shadow-md">
-        <div className="flex flex-wrap gap-4">
-          <button
-            onClick={() => filterByPeriod('day')}
-            className={`flex items-center gap-2 rounded-md px-4 py-2 ${periodType === 'day' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
-          >
-            <CalendarDays size={16} />
-            Aujourd'hui
-          </button>
-          
-          <button
-            onClick={() => filterByPeriod('month')}
-            className={`flex items-center gap-2 rounded-md px-4 py-2 ${periodType === 'month' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
-          >
-            <Calendar size={16} />
-            Ce mois
-          </button>
-          
-          <button
-            onClick={() => filterByPeriod('year')}
-            className={`flex items-center gap-2 rounded-md px-4 py-2 ${periodType === 'year' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
-          >
-            <Calendar size={16} />
-            Cette année
-          </button>
-          
-          <div className={`flex items-center gap-4 rounded-md px-4 py-2 ${periodType === 'custom' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}>
-            <span className="hidden md:inline">Personnalisé:</span>
-            <div className="flex flex-wrap gap-2">
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className={`rounded border px-2 py-1 ${periodType === 'custom' ? 'bg-white text-gray-700' : 'bg-white text-gray-700'}`}
-              />
-              <span>à</span>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className={`rounded border px-2 py-1 ${periodType === 'custom' ? 'bg-white text-gray-700' : 'bg-white text-gray-700'}`}
-              />
-              <button
-                onClick={handleCustomDateChange}
-                className="rounded bg-gray-700 px-3 text-white hover:bg-gray-800"
-              >
-                OK
-              </button>
+      <div className="container mx-auto px-4 py-6">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl md:text-3xl font-bold text-cafeBlack">Revenus</h1>
+          <p className="text-gray-500">Analyse des revenus du café</p>
+        </div>
+        
+        <div className="mb-6 rounded-lg bg-white p-4 shadow-md">
+          <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
+            <button
+              onClick={() => filterByPeriod('day')}
+              className={`flex items-center gap-2 rounded-md px-3 md:px-4 py-2 text-sm md:text-base ${periodType === 'day' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
+            >
+              <CalendarDays size={16} />
+              <span className="hidden sm:inline">Aujourd'hui</span>
+              <span className="sm:hidden">Jour</span>
+            </button>
+            
+            <button
+              onClick={() => filterByPeriod('month')}
+              className={`flex items-center gap-2 rounded-md px-3 md:px-4 py-2 text-sm md:text-base ${periodType === 'month' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
+            >
+              <Calendar size={16} />
+              <span className="hidden sm:inline">Ce mois</span>
+              <span className="sm:hidden">Mois</span>
+            </button>
+            
+            <button
+              onClick={() => filterByPeriod('year')}
+              className={`flex items-center gap-2 rounded-md px-3 md:px-4 py-2 text-sm md:text-base ${periodType === 'year' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}
+            >
+              <Calendar size={16} />
+              <span className="hidden sm:inline">Cette année</span>
+              <span className="sm:hidden">Année</span>
+            </button>
+            
+            <div className={`flex flex-col sm:flex-row items-center gap-2 rounded-md px-3 md:px-4 py-2 ${periodType === 'custom' ? 'bg-cafeRed text-white' : 'bg-gray-100 text-gray-700'}`}>
+              <span className="text-sm">Personnalisé:</span>
+              <div className="flex flex-wrap gap-1 md:gap-2 items-center">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="rounded border px-2 py-1 text-sm bg-white text-gray-700 w-32"
+                />
+                <span className="text-xs">à</span>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="rounded border px-2 py-1 text-sm bg-white text-gray-700 w-32"
+                />
+                <button
+                  onClick={handleCustomDateChange}
+                  className="rounded bg-gray-700 px-2 py-1 text-xs text-white hover:bg-gray-800"
+                >
+                  OK
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          <h2 className="mb-2 text-lg font-medium text-gray-500">Revenu Total</h2>
-          <p className="text-3xl font-bold text-cafeRed">{totalRevenue.toFixed(2)} €</p>
-        </div>
         
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          <h2 className="mb-2 text-lg font-medium text-gray-500">Période</h2>
-          <p className="text-lg font-bold text-cafeBlack">
-            {startDate === endDate 
-              ? formatDate(startDate) 
-              : `${formatDate(startDate)} - ${formatDate(endDate)}`}
-          </p>
-        </div>
-        
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          <h2 className="mb-2 text-lg font-medium text-gray-500">Moyenne Journalière</h2>
-          <p className="text-3xl font-bold text-cafeBlack">
-            {filteredData.length ? (totalRevenue / filteredData.length).toFixed(2) : 0} €
-          </p>
-        </div>
-      </div>
-      
-      <div className="rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-6 text-xl font-semibold text-cafeBlack">Évolution des Revenus</h2>
-        
-        {chartData.length > 0 ? (
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={chartData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip 
-                  formatter={(value) => [`${value} €`, 'Revenu']}
-                />
-                <Bar dataKey="revenue" fill="#e63946" />
-              </BarChart>
-            </ResponsiveContainer>
+        <div className="mb-8 grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-lg bg-white p-4 md:p-6 shadow-md text-center">
+            <h2 className="mb-2 text-sm md:text-lg font-medium text-gray-500">Revenu Total</h2>
+            <p className="text-xl md:text-3xl font-bold text-cafeRed">{totalRevenue.toFixed(2)} MAD</p>
           </div>
-        ) : (
-          <div className="flex h-80 items-center justify-center text-gray-500">
-            Aucune donnée de revenu disponible pour cette période
+          
+          <div className="rounded-lg bg-white p-4 md:p-6 shadow-md text-center">
+            <h2 className="mb-2 text-sm md:text-lg font-medium text-gray-500">Période</h2>
+            <p className="text-sm md:text-lg font-bold text-cafeBlack">
+              {startDate === endDate 
+                ? formatDate(startDate) 
+                : `${formatDate(startDate)} - ${formatDate(endDate)}`}
+            </p>
           </div>
-        )}
-      </div>
-      
-      <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-xl font-semibold text-cafeBlack">Détails des Revenus</h2>
+          
+          <div className="rounded-lg bg-white p-4 md:p-6 shadow-md text-center md:col-span-2 lg:col-span-1">
+            <h2 className="mb-2 text-sm md:text-lg font-medium text-gray-500">Moyenne Journalière</h2>
+            <p className="text-xl md:text-3xl font-bold text-cafeBlack">
+              {filteredData.length ? (totalRevenue / filteredData.length).toFixed(2) : 0} MAD
+            </p>
+          </div>
+        </div>
         
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="pb-3 text-left font-semibold text-cafeBlack">Date</th>
-                <th className="pb-3 text-right font-semibold text-cafeBlack">Revenu</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.length === 0 ? (
-                <tr>
-                  <td colSpan={2} className="py-4 text-center text-gray-500">
-                    Aucune donnée de revenu disponible pour cette période
-                  </td>
+        <div className="rounded-lg bg-white p-4 md:p-6 shadow-md">
+          <h2 className="mb-6 text-lg md:text-xl font-semibold text-cafeBlack text-center">Évolution des Revenus</h2>
+          
+          {chartData.length > 0 ? (
+            <div className="h-64 md:h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{
+                    top: 5,
+                    right: 10,
+                    left: 10,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" fontSize={12} />
+                  <YAxis fontSize={12} />
+                  <Tooltip 
+                    formatter={(value) => [`${value} MAD`, 'Revenu']}
+                  />
+                  <Bar dataKey="revenue" fill="#e63946" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="flex h-64 md:h-80 items-center justify-center text-gray-500 text-center">
+              <div>
+                <p className="text-lg mb-2">📊</p>
+                <p>Aucune donnée de revenu disponible pour cette période</p>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        <div className="mt-8 rounded-lg bg-white p-4 md:p-6 shadow-md">
+          <h2 className="mb-4 text-lg md:text-xl font-semibold text-cafeBlack text-center">Détails des Revenus</h2>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="pb-3 text-left font-semibold text-cafeBlack text-center">Date</th>
+                  <th className="pb-3 text-right font-semibold text-cafeBlack text-center">Revenu</th>
                 </tr>
-              ) : (
-                filteredData.map((revenue, index) => (
-                  <tr key={index} className="border-b border-gray-100 last:border-0">
-                    <td className="py-3">{new Date(revenue.date).toLocaleDateString()}</td>
-                    <td className="py-3 text-right font-medium">{revenue.amount.toFixed(2)} €</td>
+              </thead>
+              <tbody>
+                {filteredData.length === 0 ? (
+                  <tr>
+                    <td colSpan={2} className="py-4 text-center text-gray-500">
+                      Aucune donnée de revenu disponible pour cette période
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  filteredData.map((revenue, index) => (
+                    <tr key={index} className="border-b border-gray-100 last:border-0">
+                      <td className="py-3 text-center">{new Date(revenue.date).toLocaleDateString()}</td>
+                      <td className="py-3 text-center font-medium">{revenue.amount.toFixed(2)} MAD</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </DashboardLayout>
@@ -241,4 +249,3 @@ const RevenuePage: React.FC = () => {
 };
 
 export default RevenuePage;
-
