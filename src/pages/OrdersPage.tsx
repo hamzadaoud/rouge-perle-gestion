@@ -91,16 +91,16 @@ const OrdersPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="mb-6">
+      <div className="mb-6 text-center">
         <h1 className="text-3xl font-bold text-cafeBlack">Commandes</h1>
         <p className="text-gray-500">Créez une nouvelle commande</p>
       </div>
       
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="flex-1">
-          <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-cafeBlack">Menu</h2>
-            <div className="w-48">
+          <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h2 className="text-xl font-semibold text-cafeBlack text-center sm:text-left">Menu</h2>
+            <div className="w-full sm:w-48">
               <Select
                 value={categoryFilter}
                 onValueChange={(value) => setCategoryFilter(value)}
@@ -111,7 +111,7 @@ const OrdersPage: React.FC = () => {
                 <SelectContent>
                   {categories.map(category => (
                     <SelectItem key={category} value={category}>
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-center">
                         {category !== "Tous" && getCategoryIcon(category)}
                         <span className="ml-2">{category}</span>
                       </div>
@@ -128,17 +128,17 @@ const OrdersPage: React.FC = () => {
                 key={drink.id} 
                 className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105"
               >
-                <div className="mb-3 flex justify-between items-center">
-                  <div className="flex items-center">
-                    {getCategoryIcon(drink.category)}
-                    <h3 className="font-medium ml-2">{drink.name}</h3>
+                <div className="mb-3 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-2">
+                  <div className="flex items-center justify-center sm:justify-start w-full sm:w-auto">
+                    <div className="flex justify-center">{getCategoryIcon(drink.category)}</div>
+                    <h3 className="font-medium ml-2 text-center sm:text-left">{drink.name}</h3>
                   </div>
-                  <span className="text-cafeRed font-semibold">{drink.price.toFixed(2)} MAD</span>
+                  <span className="text-cafeRed font-semibold text-center">{drink.price.toFixed(2)} MAD</span>
                 </div>
-                <p className="mb-3 text-sm text-gray-500">{drink.description}</p>
+                <p className="mb-3 text-sm text-gray-500 text-center">{drink.description}</p>
                 <button
                   onClick={() => addToCart(drink)}
-                  className="w-full rounded-md bg-cafeRed py-2 text-white transition-colors hover:bg-red-700"
+                  className="w-full rounded-md bg-cafeRed py-2 text-white transition-colors hover:bg-red-700 text-center"
                 >
                   Ajouter
                 </button>
@@ -148,34 +148,36 @@ const OrdersPage: React.FC = () => {
         </div>
         
         <div className="w-full lg:w-96">
-          <h2 className="mb-4 text-xl font-semibold text-cafeBlack">Panier</h2>
+          <h2 className="mb-4 text-xl font-semibold text-cafeBlack text-center lg:text-left">Panier</h2>
           
           <div className="rounded-lg bg-white p-4 shadow-md">
             {cart.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-                <Coffee size={48} className="mb-2" />
-                <p>Votre panier est vide</p>
+              <div className="flex flex-col items-center justify-center py-8 text-gray-500 text-center">
+                <div className="flex justify-center mb-2">
+                  <Coffee size={48} />
+                </div>
+                <p className="text-center">Votre panier est vide</p>
               </div>
             ) : (
               <>
                 <div className="mb-4 max-h-72 overflow-y-auto">
                   {cart.map((item) => (
-                    <div key={item.drinkId} className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                      <div>
-                        <p className="font-medium">{item.drinkName}</p>
-                        <p className="text-sm text-gray-500">{item.unitPrice.toFixed(2)} MAD / unité</p>
+                    <div key={item.drinkId} className="mb-3 flex flex-col sm:flex-row items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0 gap-2">
+                      <div className="text-center sm:text-left w-full sm:w-auto">
+                        <p className="font-medium text-center sm:text-left">{item.drinkName}</p>
+                        <p className="text-sm text-gray-500 text-center sm:text-left">{item.unitPrice.toFixed(2)} MAD / unité</p>
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-center">
                         <button 
                           onClick={() => updateQuantity(item.drinkId, item.quantity - 1)}
-                          className="h-8 w-8 rounded-md bg-gray-100 text-cafeBlack hover:bg-gray-200"
+                          className="h-8 w-8 rounded-md bg-gray-100 text-cafeBlack hover:bg-gray-200 flex items-center justify-center"
                         >
                           -
                         </button>
                         <span className="mx-2 w-8 text-center">{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.drinkId, item.quantity + 1)}
-                          className="h-8 w-8 rounded-md bg-gray-100 text-cafeBlack hover:bg-gray-200"
+                          className="h-8 w-8 rounded-md bg-gray-100 text-cafeBlack hover:bg-gray-200 flex items-center justify-center"
                         >
                           +
                         </button>
@@ -185,9 +187,9 @@ const OrdersPage: React.FC = () => {
                 </div>
                 
                 <div className="mb-4 border-t border-gray-200 pt-3">
-                  <div className="flex justify-between">
-                    <span className="font-semibold">Total:</span>
-                    <span className="font-semibold text-cafeRed">{calculateTotal().toFixed(2)} MAD</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-center">Total:</span>
+                    <span className="font-semibold text-cafeRed text-center">{calculateTotal().toFixed(2)} MAD</span>
                   </div>
                 </div>
                 
@@ -195,7 +197,9 @@ const OrdersPage: React.FC = () => {
                   onClick={submitOrder}
                   className="flex w-full items-center justify-center rounded-md bg-cafeRed py-3 font-medium text-white transition-colors hover:bg-red-700"
                 >
-                  <Printer size={18} className="mr-2" />
+                  <div className="flex justify-center mr-2">
+                    <Printer size={18} />
+                  </div>
                   Valider et Imprimer Ticket
                 </button>
               </>
