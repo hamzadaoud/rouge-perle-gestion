@@ -1,4 +1,3 @@
-
 import { Drink, Order, OrderItem, Revenue, TimeLog } from "../types";
 import { getCurrentUser, registerActivity } from "./authService";
 
@@ -183,6 +182,32 @@ export const deleteDrink = (drinkId: string): Drink[] => {
   }
   
   return updatedDrinks;
+};
+
+// Nouvelles fonctions pour les statistiques des produits
+export const getTopSellingProducts = () => {
+  const orders = getOrders();
+  const drinks = getDrinks();
+  
+  const productSales: Record<string, { quantity: number; revenue: number; name: string }> = {};
+  
+  orders.forEach(order => {
+    order.items.forEach(item => {
+      if (!productSales[item.drinkId]) {
+        productSales[item.drinkId] = {
+          quantity: 0,
+          revenue: 0,
+          name: item.drinkName
+        };
+      }
+      productSales[item.drinkId].quantity += item.quantity;
+      productSales[item.drinkId].revenue += item.quantity * item.unitPrice;
+    });
+  });
+  
+  return Object.values(productSales)
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 10);
 };
 
 // Ajouter une commande

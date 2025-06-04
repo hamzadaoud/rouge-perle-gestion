@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import StatCard from '../components/StatCard';
+import TopProductsCard from '../components/TopProductsCard';
+import MoneyCalculatorCard from '../components/MoneyCalculatorCard';
 import { Activity, BarChart2, Calendar, Coffee, CreditCard, User, Users } from 'lucide-react';
-import { getOrders, getRevenues, getTimeLogs } from '../services/cafeService';
+import { getOrders, getRevenues, getTimeLogs, getTopSellingProducts } from '../services/cafeService';
 import { getStoredActivities } from '../services/authService';
 
 const Dashboard: React.FC = () => {
@@ -11,6 +13,7 @@ const Dashboard: React.FC = () => {
   const [revenue, setRevenue] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
+  const [topProducts, setTopProducts] = useState<any[]>([]);
 
   useEffect(() => {
     // Charger les données
@@ -32,6 +35,9 @@ const Dashboard: React.FC = () => {
     
     const activities = getStoredActivities().slice(0, 10);
     setRecentActivities(activities);
+    
+    const products = getTopSellingProducts();
+    setTopProducts(products);
   }, []);
 
   return (
@@ -62,6 +68,11 @@ const Dashboard: React.FC = () => {
           value={recentActivities.length} 
           icon={<Activity size={24} />} 
         />
+      </div>
+      
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <TopProductsCard topProducts={topProducts} />
+        <MoneyCalculatorCard totalAmount={revenue} />
       </div>
       
       <div className="mb-8">
