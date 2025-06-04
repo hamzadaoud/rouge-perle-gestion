@@ -235,7 +235,7 @@ export const createOrder = (items: OrderItem[]): Order | null => {
   orders.push(newOrder);
   
   localStorage.setItem("orders", JSON.stringify(orders));
-  registerActivity(`A créé une commande de ${total.toFixed(2)}€`);
+  registerActivity(`A créé une commande de ${total.toFixed(2)} MAD`);
   
   return newOrder;
 };
