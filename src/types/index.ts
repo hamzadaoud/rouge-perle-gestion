@@ -50,6 +50,14 @@ export interface Activity {
   timestamp: Date;
 }
 
+export interface LoginActivity {
+  id: string;
+  userId: string;
+  userName: string;
+  loginTime: Date;
+  date: string;
+}
+
 export interface Revenue {
   date: string;
   amount: number;

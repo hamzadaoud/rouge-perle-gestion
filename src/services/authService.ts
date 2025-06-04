@@ -1,4 +1,4 @@
-import { User, UserRole } from "../types";
+import { User, UserRole, LoginActivity } from "../types";
 
 // Dans une vraie application, ces données seraient stockées dans une base de données
 const users: User[] = [
@@ -30,12 +30,41 @@ const passwords: Record<string, string> = {
   "Noureddine@perle-rouge.com": "NOUREDDINE7080",
 };
 
+// Nouvelle fonction pour enregistrer les connexions
+const registerLogin = (user: User): void => {
+  const loginActivities = getStoredLoginActivities();
+  const today = new Date().toISOString().split('T')[0];
+  
+  const newLoginActivity: LoginActivity = {
+    id: `login_${Date.now()}`,
+    userId: user.id,
+    userName: user.name,
+    loginTime: new Date(),
+    date: today
+  };
+  
+  loginActivities.push(newLoginActivity);
+  localStorage.setItem("loginActivities", JSON.stringify(loginActivities));
+};
+
+// Fonction pour récupérer les activités de connexion
+export const getStoredLoginActivities = (): LoginActivity[] => {
+  try {
+    return JSON.parse(localStorage.getItem("loginActivities") || "[]");
+  } catch {
+    return [];
+  }
+};
+
 export const authenticate = (email: string, password: string): User | null => {
   const user = users.find((user) => user.email === email);
   
   if (user && passwords[email] === password) {
     // Ne jamais stocker le mot de passe dans le localStorage
     localStorage.setItem("currentUser", JSON.stringify(user));
+    // Enregistrer la connexion
+    registerLogin(user);
+    registerActivity(`S'est connecté au système`);
     return user;
   }
   

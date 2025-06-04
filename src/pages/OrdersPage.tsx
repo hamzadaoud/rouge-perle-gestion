@@ -122,16 +122,16 @@ const OrdersPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
             {filteredDrinks.map((drink) => (
               <div 
                 key={drink.id} 
-                className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105"
+                className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 w-full max-w-sm"
               >
-                <div className="mb-3 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-2">
-                  <div className="flex items-center justify-center sm:justify-start w-full sm:w-auto">
+                <div className="mb-3 flex flex-col items-center text-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <div className="flex justify-center">{getCategoryIcon(drink.category)}</div>
-                    <h3 className="font-medium ml-2 text-center sm:text-left">{drink.name}</h3>
+                    <h3 className="font-medium text-center">{drink.name}</h3>
                   </div>
                   <span className="text-cafeRed font-semibold text-center">{drink.price.toFixed(2)} MAD</span>
                 </div>
