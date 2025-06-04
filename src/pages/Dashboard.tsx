@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
         />
         <StatCard 
           title="Revenu Total" 
-          value={`${revenue.toFixed(2)} €`} 
+          value={`${revenue.toFixed(2)} MAD`} 
           icon={<CreditCard size={24} />} 
         />
         <StatCard 
@@ -65,22 +65,35 @@ const Dashboard: React.FC = () => {
       </div>
       
       <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold text-cafeBlack">Activités Récentes</h2>
-        <div className="rounded-lg bg-white p-4 shadow-md">
+        <h2 className="mb-4 text-xl font-semibold text-cafeBlack text-center">Activités Récentes</h2>
+        <div className="rounded-lg bg-white p-6 shadow-md mx-auto max-w-4xl">
           {recentActivities.length === 0 ? (
-            <p className="text-gray-500">Aucune activité récente</p>
+            <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+              <User size={48} className="mb-4 text-gray-300" />
+              <p className="text-center">Aucune activité récente</p>
+            </div>
           ) : (
             <div className="max-h-80 overflow-y-auto">
               {recentActivities.map((activity) => (
-                <div key={activity.id} className="mb-3 flex items-start border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                  <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-cafeRed text-white">
-                    <User size={16} />
+                <div key={activity.id} className="mb-4 flex items-center justify-between border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cafeRed text-white flex-shrink-0">
+                      <User size={18} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-cafeBlack">{activity.userName}</p>
+                      <p className="text-sm text-gray-600">{activity.action}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">{activity.userName}</p>
-                    <p className="text-xs text-gray-500">{activity.action}</p>
+                  <div className="text-right flex-shrink-0">
                     <p className="text-xs text-gray-400">
-                      {new Date(activity.timestamp).toLocaleString()}
+                      {new Date(activity.timestamp).toLocaleString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
                     </p>
                   </div>
                 </div>
