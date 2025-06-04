@@ -10,6 +10,7 @@ const OrdersPage: React.FC = () => {
   const [cart, setCart] = useState<OrderItem[]>([]);
   const [drinks] = useState<Drink[]>(getDrinks());
   const [categoryFilter, setCategoryFilter] = useState<string>("Tous");
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: string]: boolean }>({});
   
   const categories = useMemo(() => {
     const cats = ["Tous", ...new Set(drinks.map(drink => drink.category))];
@@ -32,6 +33,18 @@ const OrdersPage: React.FC = () => {
       case "Repas": return <Sandwich className="h-5 w-5" />;
       default: return <Coffee className="h-5 w-5" />;
     }
+  };
+
+  const toggleDescription = (drinkId: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [drinkId]: !prev[drinkId]
+    }));
+  };
+
+  const truncateDescription = (description: string, maxLength: number = 50) => {
+    if (description.length <= maxLength) return description;
+    return description.substring(0, maxLength) + "...";
   };
   
   const addToCart = (drink: Drink) => {
@@ -126,22 +139,43 @@ const OrdersPage: React.FC = () => {
             {filteredDrinks.map((drink) => (
               <div 
                 key={drink.id} 
-                className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 w-full max-w-sm"
+                className="rounded-lg bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 w-full max-w-sm flex flex-col h-full"
               >
-                <div className="mb-3 flex flex-col items-center text-center gap-2">
+                <div className="mb-3 flex flex-col items-center text-center gap-2 flex-grow">
                   <div className="flex items-center justify-center gap-2">
                     <div className="flex justify-center">{getCategoryIcon(drink.category)}</div>
                     <h3 className="font-medium text-center">{drink.name}</h3>
                   </div>
                   <span className="text-cafeRed font-semibold text-center">{drink.price.toFixed(2)} MAD</span>
+                  
+                  {drink.description && (
+                    <div className="text-sm text-gray-500 text-center flex-grow">
+                      <p>
+                        {expandedDescriptions[drink.id] 
+                          ? drink.description 
+                          : truncateDescription(drink.description)
+                        }
+                        {drink.description.length > 50 && (
+                          <button
+                            onClick={() => toggleDescription(drink.id)}
+                            className="ml-1 text-cafeRed hover:underline focus:outline-none"
+                          >
+                            {expandedDescriptions[drink.id] ? "Moins" : "Lire plus"}
+                          </button>
+                        )}
+                      </p>
+                    </div>
+                  )}
                 </div>
-                <p className="mb-3 text-sm text-gray-500 text-center">{drink.description}</p>
-                <button
-                  onClick={() => addToCart(drink)}
-                  className="w-full rounded-md bg-cafeRed py-2 text-white transition-colors hover:bg-red-700 text-center"
-                >
-                  Ajouter
-                </button>
+                
+                <div className="mt-auto flex justify-center">
+                  <button
+                    onClick={() => addToCart(drink)}
+                    className="w-full max-w-[200px] h-10 rounded-md bg-cafeRed text-white transition-colors hover:bg-red-700 text-center font-medium"
+                  >
+                    Ajouter
+                  </button>
+                </div>
               </div>
             ))}
           </div>
