@@ -314,3 +314,182 @@ export const getRevenues = (): Revenue[] => {
     amount
   })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
+
+// Nouvelle fonction pour vider toutes les activités
+export const clearAllActivities = (): void => {
+  const user = getCurrentUser();
+  if (!user || user.role !== 'admin') {
+    throw new Error('Seuls les administrateurs peuvent vider les activités');
+  }
+  
+  localStorage.removeItem("activities");
+  localStorage.removeItem("loginActivities");
+  registerActivity("A vidé toutes les activités du système");
+};
+
+// Nouvelle fonction pour imprimer un rapport de revenus
+export const printRevenueReport = (filteredData: any[], periodType: string, startDate: string, endDate: string, totalRevenue: number): void => {
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
+
+  const getPeriodLabel = () => {
+    switch (periodType) {
+      case 'day':
+        return `Jour: ${formatDate(startDate)}`;
+      case 'month':
+        return `Mois: ${new Date(startDate).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}`;
+      case 'year':
+        return `Année: ${new Date(startDate).getFullYear()}`;
+      case 'custom':
+        return `Période personnalisée: ${formatDate(startDate)} - ${formatDate(endDate)}`;
+      default:
+        return 'Période inconnue';
+    }
+  };
+
+  const reportContent = `
+    <html>
+    <head>
+      <title>Rapport de Revenus - La Perle Rouge</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          color: #333;
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+          border-bottom: 2px solid #e63946;
+          padding-bottom: 20px;
+        }
+        .cafe-name {
+          font-size: 2rem;
+          font-weight: bold;
+          color: #e63946;
+          margin-bottom: 10px;
+        }
+        .report-title {
+          font-size: 1.5rem;
+          color: #333;
+        }
+        .summary {
+          background-color: #f8f9fa;
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+        }
+        .summary-item {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          font-size: 1.1rem;
+        }
+        .total-revenue {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #e63946;
+          border-top: 2px solid #e63946;
+          padding-top: 10px;
+          margin-top: 10px;
+        }
+        .details-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+        .details-table th,
+        .details-table td {
+          border: 1px solid #ddd;
+          padding: 12px;
+          text-align: left;
+        }
+        .details-table th {
+          background-color: #e63946;
+          color: white;
+          font-weight: bold;
+        }
+        .details-table tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+        .footer {
+          margin-top: 40px;
+          text-align: center;
+          color: #666;
+          font-size: 0.9rem;
+        }
+        @media print {
+          body { margin: 0; }
+          .no-print { display: none; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="cafe-name">LA PERLE ROUGE</div>
+        <div class="report-title">Rapport de Revenus</div>
+        <div style="color: #666; margin-top: 10px;">
+          Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="summary-item">
+          <span><strong>Période:</strong></span>
+          <span>${getPeriodLabel()}</span>
+        </div>
+        <div class="summary-item">
+          <span><strong>Nombre de jours:</strong></span>
+          <span>${filteredData.length}</span>
+        </div>
+        <div class="summary-item">
+          <span><strong>Moyenne journalière:</strong></span>
+          <span>${filteredData.length ? (totalRevenue / filteredData.length).toFixed(2) : 0} MAD</span>
+        </div>
+        <div class="summary-item total-revenue">
+          <span><strong>REVENU TOTAL:</strong></span>
+          <span>${totalRevenue.toFixed(2)} MAD</span>
+        </div>
+      </div>
+
+      <table class="details-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Revenu (MAD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filteredData.length === 0 ? 
+            '<tr><td colspan="2" style="text-align: center; color: #666;">Aucune donnée disponible pour cette période</td></tr>' :
+            filteredData.map(revenue => `
+              <tr>
+                <td>${formatDate(revenue.date)}</td>
+                <td style="text-align: right; font-weight: bold;">${revenue.amount.toFixed(2)} MAD</td>
+              </tr>
+            `).join('')
+          }
+        </tbody>
+      </table>
+
+      <div class="footer">
+        <p>Ce rapport a été généré automatiquement par le système de gestion de La Perle Rouge</p>
+        <p>Pour toute question, veuillez contacter l'administration</p>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  if (printWindow) {
+    printWindow.document.write(reportContent);
+    printWindow.document.close();
+    setTimeout(() => {
+      printWindow.print();
+    }, 500);
+  } else {
+    alert("Veuillez autoriser les fenêtres popup pour imprimer le rapport.");
+  }
+};

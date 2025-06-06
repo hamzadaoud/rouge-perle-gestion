@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { getRevenues } from '../services/cafeService';
+import { getRevenues, clearAllActivities, printRevenueReport } from '../services/cafeService';
+import { checkIsAdmin } from '../services/authService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { CalendarDays, Calendar } from 'lucide-react';
+import { CalendarDays, Calendar, Printer, Trash2 } from 'lucide-react';
 
 const RevenuePage: React.FC = () => {
   const [revenueData, setRevenueData] = useState<any[]>([]);
@@ -12,10 +12,12 @@ const RevenuePage: React.FC = () => {
   const [periodType, setPeriodType] = useState<'day' | 'month' | 'year' | 'custom'>('day');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  const [isAdmin, setIsAdmin] = useState(false);
   
   useEffect(() => {
     const revenues = getRevenues();
     setRevenueData(revenues);
+    setIsAdmin(checkIsAdmin());
     
     // Par défaut, on filtre sur la journée en cours
     filterByPeriod('day');
@@ -91,6 +93,21 @@ const RevenuePage: React.FC = () => {
     }
   };
   
+  const handlePrintReport = () => {
+    printRevenueReport(filteredData, periodType, startDate, endDate, totalRevenue);
+  };
+
+  const handleClearActivities = () => {
+    if (window.confirm('Êtes-vous sûr de vouloir vider toutes les activités ? Cette action est irréversible.')) {
+      try {
+        clearAllActivities();
+        alert('Toutes les activités ont été supprimées avec succès.');
+      } catch (error) {
+        alert('Erreur: Seuls les administrateurs peuvent effectuer cette action.');
+      }
+    }
+  };
+  
   return (
     <DashboardLayout requireAdmin={true}>
       <div className="container mx-auto px-4 py-6">
@@ -98,6 +115,26 @@ const RevenuePage: React.FC = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-cafeBlack">Revenus</h1>
           <p className="text-gray-500">Analyse des revenus du café</p>
         </div>
+        
+        {/* Actions rapides pour admin */}
+        {isAdmin && (
+          <div className="mb-6 flex flex-wrap gap-4 justify-center">
+            <button
+              onClick={handlePrintReport}
+              className="flex items-center gap-2 rounded-md bg-cafeRed px-4 py-2 text-white hover:bg-red-700 transition-colors"
+            >
+              <Printer size={16} />
+              Imprimer le Rapport
+            </button>
+            <button
+              onClick={handleClearActivities}
+              className="flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition-colors"
+            >
+              <Trash2 size={16} />
+              Vider les Activités
+            </button>
+          </div>
+        )}
         
         <div className="mb-6 rounded-lg bg-white p-4 shadow-md">
           <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
