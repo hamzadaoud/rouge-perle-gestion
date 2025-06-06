@@ -327,6 +327,25 @@ export const clearAllActivities = (): void => {
   registerActivity("A vidé toutes les activités du système");
 };
 
+// Nouvelle fonction pour vider toutes les données du système
+export const clearAllSystemData = (): void => {
+  const user = getCurrentUser();
+  if (!user || user.role !== 'admin') {
+    throw new Error('Seuls les administrateurs peuvent vider toutes les données');
+  }
+  
+  // Vider toutes les données sauf les utilisateurs et les produits initiaux
+  localStorage.removeItem("orders");
+  localStorage.removeItem("timeLogs");
+  localStorage.removeItem("activities");
+  localStorage.removeItem("loginActivities");
+  
+  // Réinitialiser les produits aux valeurs par défaut
+  localStorage.setItem("drinks", JSON.stringify(initialDrinks));
+  
+  registerActivity("A vidé toutes les données du système");
+};
+
 // Nouvelle fonction pour imprimer un rapport de revenus
 export const printRevenueReport = (filteredData: any[], periodType: string, startDate: string, endDate: string, totalRevenue: number): void => {
   const formatDate = (dateStr: string) => {

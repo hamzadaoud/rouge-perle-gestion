@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { getRevenues, clearAllActivities, printRevenueReport } from '../services/cafeService';
+import { getRevenues, clearAllActivities, clearAllSystemData, printRevenueReport } from '../services/cafeService';
 import { checkIsAdmin } from '../services/authService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { CalendarDays, Calendar, Printer, Trash2 } from 'lucide-react';
+import { CalendarDays, Calendar, Printer, Trash2, Database } from 'lucide-react';
 
 const RevenuePage: React.FC = () => {
   const [revenueData, setRevenueData] = useState<any[]>([]);
@@ -107,6 +107,20 @@ const RevenuePage: React.FC = () => {
       }
     }
   };
+
+  const handleClearAllData = () => {
+    if (window.confirm('Êtes-vous sûr de vouloir vider TOUTES les données du système (commandes, revenus, logs, activités) ? Cette action est IRRÉVERSIBLE.')) {
+      if (window.confirm('ATTENTION: Cette action supprimera définitivement toutes les commandes, revenus, pointages et activités. Confirmez-vous ?')) {
+        try {
+          clearAllSystemData();
+          // Recharger la page pour afficher les données mises à jour
+          window.location.reload();
+        } catch (error) {
+          alert('Erreur: Seuls les administrateurs peuvent effectuer cette action.');
+        }
+      }
+    }
+  };
   
   return (
     <DashboardLayout requireAdmin={true}>
@@ -128,10 +142,17 @@ const RevenuePage: React.FC = () => {
             </button>
             <button
               onClick={handleClearActivities}
-              className="flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition-colors"
+              className="flex items-center gap-2 rounded-md bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 transition-colors"
             >
               <Trash2 size={16} />
               Vider les Activités
+            </button>
+            <button
+              onClick={handleClearAllData}
+              className="flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition-colors"
+            >
+              <Database size={16} />
+              Vider Toutes les Données
             </button>
           </div>
         )}
